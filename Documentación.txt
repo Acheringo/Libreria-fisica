@@ -1,0 +1,64 @@
+---Librería "fisicaUZ"---
+
+--CLASES--
+    -complex-
+        Números complejos. Toma un valor real y uno imaginario (que a la hora de introducirlo no requiere de la i).
+        Métodos asociados: print(). Muestra en la consola el número complejo.
+                           mod()->double. Devuelve el módulo del número complejo
+                           arctg()->double. Devuelve el arctg del número complejo correspondiente a su forma polar.
+
+    -matrix-
+        Matrices. Toma un número de filas y otro de columnas, además de las entradas. Se construye dinámicamente, siendo necesario indicar el número de filas y el de columnas. Se destruye al finalizar para evitar fugas de datos.
+        Métodos asociados: print(). Muestra en la consola las componentes de la matriz, formateadas para tener la forma de dicha matriz.
+
+    -tensor-
+        Tensores. Toma un array para sus dimensiones y otro para los datos. También necesita el orden y el tamaño total. A la hora de su construcción requiere de las dimensiones y el orden. Se destruye al finalizar para evitar fugas de datos.
+        Métodos asociados: No accesibles por el usuario: calculateIndex(int[])->int. Busca el índice asociado a la entradad del tensor.
+                                                         printRecursive(int, int)->. Método recursivo para mostrar el tensor.
+                           Accesibles por el usuario: setValue(int[], int)->. Recibe un array con el índice del elemento al que se le va a asociar el valor, así como el valor asociado. Asocia dicho valor al índice dado.
+                                                      getValue(int[])->double. Recibe un array con el índice del elemento que queremos obtener y devuelve el valor de dicho elemento. Da error si no hay nada en dicho elemento.
+                                                      print()->. Muestra el tensor formateado como stacks de matrices, para una lectura más sencilla.
+                                                      printVal(int[])->. Recibe el índice del elemento a mostrar y muestra en la consola el elemento asociado a dicho índice.
+
+    -complexmatrix-
+        Igual que matrix pero con entradas complejas
+
+--FUNCIONES--
+    complexsum(complex, complex-> complex)
+        Hace la suma de números complejos
+    
+    complexprod(complex, complex->complex)
+        Hace el producto de números complejos
+
+    conjugate(complex->complex)
+        Devuelve el conjugado de un número complejo
+
+    complexdiv(complex, complex->complex)
+        Hace la división de números complejos
+
+    kronecker(int, int -> int)
+        Esta función actúa como la delta de Kronecker. Le das dos índices (i,j) y devuelve 0 o 1 en función de si ambos índices son iguales
+
+    levi-civita(int, int, int -> int)
+        Esta función actúa como el tensor de Levi-Civita. Recibe tres índices (i,j,k), y devuelve el valor 0 si se repite alguno, el valor 1 si los índices son cíclicos y el valor -1 si son anticíclicos.
+
+    factorial(int -> int)
+        Esta función devuelve el factorial de un número
+
+    combinatorio(int, int -> int)
+        Esta función recibe dos números (n,k), y devuelve el número combinatorio nCk. Hace uso de la función "factorial".
+
+    prod_esc(double[], double[], int ->double)
+        Esta función recibe tres argumentos: dos vectores (double) de igual dimensión y un número entero que es la dimensión de los vectores. Devuelve el producto escalar de ambos vectores. Hace uso de la función "kronecker".
+
+    iseq(int, int->)
+        No utilizable. Se usa para devolver error en el producto de matrices.
+    
+    prod(matrix, matrix -> matrix)/cprod(complexmatrix, complexmatrix -> complexmatrix)
+        Hace el producto de matrices. Da error si las dimensiones no son compatibles (utilizando iseq)
+
+    gaussJordan(matrix -> matrix)/cgaussJordan(complexmatrix -> complexmatrix)
+        Devuelve la matriz triangular superior asociada a la matriz de entrada utilizando el método de Gauss-Jordan. No la reduce.
+    
+    det(matriz -> double)/cdet(complexmatrix -> complex)
+        Devuelve el determinante de la matriz. Utiliza (c)gaussJordan para escalonar y multiplica los valores de la diagonal.

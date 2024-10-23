@@ -1,0 +1,13 @@
+--Historial de cambios--
+    -2024-
+        -21/10-
+            Ver 1.0.0: Primera versión
+        -23/10-
+            Ver 1.1.0: Novedades: Se añade la clase "complexmatrix", que son matrices con entradas complejas. Mismos métodos que matrix.
+                                  Se añade la función "gaussJordan": Toma una matriz y devuelve su forma escalonada (sin reducir) aplicando el método de Gauss-Jordan.
+                                  Se añade la función "det": Toma una matriz y devuelve su determinante (en caso de existir) o un mensaje de error (si la matriz no es cuadrada)
+                       Arreglos: Se ha solucionado que al copiar una matriz daba un error por violación al acceso de la memoria
+        -24/10-
+            Ver 1.1.1: Novedades: Se añade el método "printzeros()" a la clase complex: Muestra el número complejo sin omitir los coeficientes 0
+                                  Se añade la función "complexdiv": Divide números complejos
+                                  Se añaden las funciones "cgaussJordan", "cprod" y "cdet": hacen lo mismo que "gaussJordan", "prod" y "det", solo que con complexmatrix

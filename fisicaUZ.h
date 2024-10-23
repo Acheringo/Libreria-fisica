@@ -1,0 +1,556 @@
+#ifndef fisicaUZ_H_INCLUDED
+#define fisicaUZ_H_INCLUDED
+
+#include<iostream>
+
+using namespace std;
+
+class complex{ //Clase de números complejos
+    public:
+        double re; //Parte real
+        double im; //Parte imaginaria
+        void print(){ //Método para mostrar en pantalla el número complejo, formateado como re+im i
+            if(re<0){
+                cout<<re;
+            }
+            if(re>0){
+                cout<<re;
+            } // Solo mostramos la parte real si es distinta de 0
+            if(re==0){
+                if(im>0){
+                    cout<<im<<"i";
+                }
+                if(im<0){
+                    cout<<im<<"i";
+                }
+                //Solo mostramos la parte imaginaria si es distinta de 0
+            }
+            if(re!=0){
+                if(im>0){
+                    if(im==1){
+                        cout<<"+i";
+                    }
+                    else{
+                        cout<<"+"<<im<<"i";
+                    }
+                } //Si la parte imaginaria es mayor que 0, la mostramos con un +
+                if(im<0){
+                    if(im==-1){
+                        cout<<"-i";
+                    }
+                    else{
+                    cout<<im<<"i";
+                    }
+                } //Si la parte imaginaria es menor que 0, la mostramos sola, ya que el signo ya está puesto
+            }
+        }
+        void printzeros(){ //Misma función que print solo que si re=0 y im=0, muestra 0 + 0i
+            cout<<re;
+                if(im>=0){
+                    if(im==1){
+                        cout<<"+i";
+                    }
+                    else{
+                        cout<<"+"<<im<<"i";
+                    }
+
+                }
+                if(im<0){
+                    if(im==-1){
+                        cout<<"-i";
+                    }
+                    else{
+                    cout<<im<<"i";
+                    }
+                }
+                if(im==0){
+                    cout<<im<<"i";
+                }
+        }
+        double mod(){ //Método para calcular el módulo de un número complejo
+            return re*re+im*im;
+        }
+        double arctg(){ //Método que devuelve el arcotagente del ángulo polar del número complejo
+            return im/re;
+        }
+
+};
+
+class matrix{ //Clase de matrices reales
+    public:
+        int nrow; //Número de filas
+        int ncol; //Número de columnas
+        double** entrie; //Entradas, puntero doble (fila y columna)
+
+        matrix(int rows, int cols){ //Constructor dinámico
+            nrow = rows; //El número de filas que se introduce es el de la matriz
+            ncol = cols; //El número de columnas que se introduce es el de la matriz
+            entrie = new double*[nrow]; //Creamos un array de punteros, con un número de elementos igual al número de filas
+            for (int i = 0; i < nrow; ++i){
+                entrie[i] = new double[ncol]; //Para cada fila, creamos un array dentro del que ya habíamos creado antes, tantos como sea el número de columnas
+            }
+        }
+
+        ~matrix(){ //Destructor de la matriz
+            for (int i = 0; i < nrow; ++i){
+                delete[] entrie[i]; //Borramos las columnas
+            }
+            delete[] entrie; //Borramos las filas
+        }
+            
+        matrix(const matrix& other){ // Constructor de copia (copia profunda)
+            nrow = other.nrow; //Asignamos el mismo número de filas
+            ncol = other.ncol; //Asignamos el mismo número de columnas
+            entrie = new double*[nrow]; //Creamos filas
+            for (int i = 0; i < nrow; ++i){
+                entrie[i] = new double[ncol]; //Creamos columnas
+                for (int j = 0; j < ncol; ++j){
+                    entrie[i][j] = other.entrie[i][j]; //Copiamos elemento a elemento
+                }
+            }
+        }
+
+
+        matrix& operator=(const matrix& other){ //Sobrecarga del operador de asignación (también copia profunda)
+            if (this != &other) {
+                //Liberar la memoria actual para crear una nueva
+                for (int i = 0; i < nrow; ++i){
+                    delete[] entrie[i];
+                }
+                delete[] entrie;
+
+                //Proceso de copia anterior
+                nrow = other.nrow;
+                ncol = other.ncol;
+                entrie = new double*[nrow];
+                for (int i = 0; i < nrow; ++i){
+                    entrie[i] = new double[ncol];
+                    for (int j = 0; j < ncol; ++j){
+                        entrie[i][j] = other.entrie[i][j];
+                    }
+                }
+            }
+            return *this;
+        }
+        void print(){ //Método para mostrar los valores en pantalla
+            for(int i=0; i<nrow; i++){
+                for(int j=0; j<ncol;j++){
+                    cout<<entrie[i][j]<<" ";
+                }
+                cout<<endl;
+            }
+        }
+};
+
+class complexmatrix{ //Clase de matrices reales (iguales que matrix solo que con entradas complex en lugar de double)
+    public:
+        int nrow;
+        int ncol;
+        complex** entrie;
+
+        complexmatrix(int rows, int cols){
+            nrow = rows;
+            ncol = cols;
+            entrie = new complex*[nrow];
+            for (int i = 0; i < nrow; ++i){
+                entrie[i] = new complex[ncol];
+            }
+        }
+
+        ~complexmatrix(){
+            for(int i=0; i<nrow; i++){
+                delete[] entrie[i];
+            }
+            delete[] entrie;
+        }
+
+        complexmatrix(const complexmatrix& other){
+            nrow = other.nrow;
+            ncol = other.ncol;
+            entrie = new complex*[nrow];
+            for (int i = 0; i < nrow; ++i){
+                entrie[i] = new complex[ncol];
+                for (int j = 0; j < ncol; ++j){
+                    entrie[i][j] = other.entrie[i][j];
+                }
+            }
+        }
+
+        complexmatrix& operator=(const complexmatrix& other){
+            if (this != &other) {
+                for (int i = 0; i < nrow; ++i){
+                    delete[] entrie[i];
+                }
+                delete[] entrie;
+
+                nrow = other.nrow;
+                ncol = other.ncol;
+                entrie = new complex*[nrow];
+                for (int i = 0; i < nrow; ++i){
+                    entrie[i] = new complex[ncol];
+                    for (int j = 0; j < ncol; ++j){
+                        entrie[i][j] = other.entrie[i][j];
+                    }
+                }
+            }
+            return *this;
+        }
+        void print(){
+            for(int i=0; i<nrow; i++){
+                for(int j=0; j<ncol;j++){
+                    entrie[i][j].printzeros(); cout<<" ";
+                }
+                cout<<endl;
+            }
+        }
+};
+
+class tensor { //Clase de tensores
+private:
+    double* data; //Datos
+    int* dimensions; //Dimensiones del tensor
+    int order; //Orden del tensor
+    int totalSize; //Tamaño total del tensor
+
+    int calculateIndex(int* indices) const{ // Método para calcular el índice lineal (la explicación es larga, está al finalizar el método)
+        int index = 0;
+        int multiplier = 1;
+        for (int i = order - 1; i >= 0; --i){
+            index += indices[i] * multiplier;
+            multiplier *= dimensions[i];
+        }
+        return index;
+    }
+    /*
+    Vamos a estar guardando los elementos del tensor en un array lineal, ya que c++ no tiene soporte para arrays de más de 2 dimensiones
+    Para ello, vamos a estar recorriendo los índices desde el final hasta el comienzo. A cada elemento del tensor le corresponderá
+    un elemento en el array que será la suma de los índices por un multiplicador, que este será el producto acumulado de las dimensiones,
+    de esta forma, hacemos una asignación 1 a 1 de un elemento del tensor con un elemento del array.
+    */
+
+
+    void printRecursive(int* indices, int depth) const{//Método para mostrar el tensor (explicación larga)
+        if (depth == order){
+            int index = calculateIndex(indices);
+            cout << data[index] << " ";
+            return;
+        }
+
+        cout << "[";
+        for (int i = 0; i < dimensions[depth]; ++i){
+            indices[depth] = i;
+            printRecursive(indices, depth + 1);
+            if (i < dimensions[depth] - 1){
+                cout << ", ";
+            }
+        }
+        cout << "]"<<endl;
+        if (depth == 0){
+           cout << endl;
+        }
+    }
+    /*
+    Este método es recursivo, es decir, se llama a sí mismo. Al introducir unos índices y una profundidad
+    (algo así como la capa de matrices), va mostrando en pantalla los elementos del tensor, formateados
+    en forma de hipermatriz para facilitar la lectura. Hace uso de calculateIndex para saber qué elemento
+    tiene que mostrar cada vez, y se llama así mismo hasta que llegue a la última capa (que es igual que order)
+    */
+public:
+    tensor(int* dims, int ord) : order(ord){ //Constructor dinámico
+        dimensions = new int[order]; //Las dimensiones del tensor van a ser un array con "order" elementos
+        totalSize = 1; //Inicializamos el tamaño total como 1
+        for (int i = 0; i < order; ++i) {
+            dimensions[i] = dims[i]; //A cada elemento de dimensiones, le asignamos el valor del array de dimensiones que entra
+            totalSize *= dimensions[i]; //El tamaño total quedará multiplicado por cada una de las dimensiones
+        }
+        data = new double[totalSize]; //El array con los datos tendrá un número de elementos igual a tamaño total
+    }
+
+    // Destructor
+    ~tensor(){
+        delete[] data; //Borra los datos
+        delete[] dimensions; //Borra las dimensiones
+    }
+
+    void setValue(int* indices, double value){ //Méotodo para asignar valores
+        if (indices != nullptr){ //Si el array de índices no es nulo 
+            int index = calculateIndex(indices); //Calculamos la posición del array de datos
+            data[index] = value; //Asignamos el valor a esa posición
+        }
+    }
+
+    double getValue(int* indices) const{ //Método para obtener un valor
+    try{
+        if (indices == nullptr){ //Si el array de índices es nulo
+            throw invalid_argument("Element does not exist"); //Mostramos mensaje de error
+        }
+        int index = calculateIndex(indices); //Calculamos la posición en el array de datos
+        return data[index]; //Devolvemos el elemento
+    } catch(const invalid_argument&e){ //Error
+        cout<<e.what()<<endl;
+        }
+    }
+    
+    void print() const{ //Método para imprimir el tensor
+        int* indices = new int[order]; //Creamos un array para los índices del tamaño del orden del tensor
+        printRecursive(indices, 0); //Iniciamos el print recursivo
+        delete[] indices; //Borramos los índices
+    }
+    void printVal(int* indices) const{ //Método para imprimir un elemento
+        cout<<getValue(indices); //Muestra el elemento correspondiente a los índices introducidos
+    }
+};
+
+complex complexsum(complex a, complex b){ //Suma compleja
+    /*
+    (a+bi)+(c+di)=(a+c)+(b+d)i
+    */
+    complex res;
+    res.re=a.re+b.re;
+    res.im=a.im+b.im; 
+    return res;
+}
+
+complex complexprod(complex a, complex b){ //Producto complejo
+    /*
+    (a+bi)(c+di)=(ac-bd)+(ad+bc)i
+    */
+    complex res;
+    res.re=a.re*b.re-a.im*b.im;
+    res.im=a.re*b.im+a.im*b.re;
+    return res;
+}
+
+complex conjugate(complex a){ //Complejo conjugado
+    /*
+    conjugado de a+bi=a-bi
+    */
+    complex res;
+    res.re=a.re;
+    res.im=-a.im;
+    return res;
+}
+
+complex complexdiv(complex a, complex b){ //División compleja
+    /*
+    (a+bi)/(c+di)=(a+bi)(c-di)/(c^2+d^2)=[(ac+bd)+(bc-ad)i]/(c^2+d^2)
+    */
+    complex res;
+    double denom = b.re * b.re + b.im * b.im;
+    res.re = (a.re * b.re + a.im * b.im) / denom;
+    res.im = (a.im * b.re - a.re * b.im) / denom;
+    return res;
+}
+
+int kronecker(int i, int j){ //Delta de kronecker
+    if(i==j){ //Si i es igual que j, la delta vale 1
+        return 1;
+    }
+    else{ //Si son distintos, vale 0
+        return 0;
+    }
+}
+
+int levi_civita(int i, int j, int k){ //Tensor de Levi-Civita
+    if(i==j || i==k || j==k){ //Si hay dos índices repetidos, vale 0
+        return 0;
+    }
+    else{ //Explicación larga
+        int perm=1;
+        int ijk[3]={i,j,k};
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3-i-1; j++) {
+                if (ijk[j] > ijk[j+1]) {
+                    int temp = ijk[j];
+                    ijk[j] = ijk[j+1];
+                    ijk[j+1] = temp;
+                    perm*=(-1);
+                }
+            }
+        }
+        return perm;
+    }
+    /*
+    El tensor vale 1 si los índices están en orden cíclico, y -1 si es anticíclico. Para calcularlo vamos a ver el número
+    de permutaciones que tenemos que hacerle a los índices para que estén ordenados, ya que la definición que hemos dado
+    es equivalente a la signatura de las permutaciones que se le ha hecho a los índices desde la posición ordenada (de
+    menor a mayor). Por tanto, por cada movimiento que hagamos hasta que estén ordenados, multiplicamos por -1 el valor
+    de la signatura (llamado perm), y cuando esté ordenado, lo devolvemos
+    */
+}
+
+int factorial(int n){ //Número factorial (no recursivo)
+    int resultado=1;
+    for(int i=1; i<=n; i++){
+        resultado*=i; //Multiplica por todos los números desde 1 hasta el introducido (definición de factorial)
+    }
+    return resultado;
+}
+
+int combinatorio(int n, int k){ //Número combinatorio n sobre k
+    int resultado;
+    resultado = (factorial(n)/(factorial(k)*factorial(n-k))); //Definición de número combinatorio
+    return resultado;
+}
+
+double prod_esc(double arr1[], double arr2[], int n){ //Producto escalar de dos vectores
+    double res = 0;
+    for(int i = 0; i < n; i++){
+        res += arr1[i] * arr2[i]; //Definición del producto escalar de dos vectores en el espacio euclídeo
+    }
+    return res;
+}
+
+
+void iseq(int n, int m){ //Función que devuelve error si dos números son distintos, usado en matrices
+    if (n != m) {
+        throw invalid_argument("Matrix dimension incompatible");
+    }
+}
+
+matrix prod(matrix mat1, matrix mat2){ //Producto de dos matrices
+    matrix res(mat1.nrow, mat2.ncol); //Creamos una matriz para guardar el resultado con el número de filas de mat1 y columnas de mat2
+    try {
+        iseq(mat1.ncol, mat2.nrow); //Miramos si son compatibles
+
+        for (int i = 0; i < res.nrow; i++){
+            for (int j = 0; j < res.ncol; j++){
+                res.entrie[i][j] = 0;
+                for (int r = 0; r < mat1.ncol; r++){
+                    res.entrie[i][j] += mat1.entrie[i][r] * mat2.entrie[r][j]; //Hacemos la multiplicación elemento por elemento (siguiendo las normas)
+                }
+            }
+        }
+    } catch (const invalid_argument& e){
+        cout << e.what() << endl; //Error
+    }
+    return res;
+}
+complexmatrix cprod(complexmatrix mat1, complexmatrix mat2){ //Igual que el anterior pero con complejos 
+    complexmatrix res(mat1.nrow, mat2.ncol);
+    try {
+        iseq(mat1.ncol, mat2.nrow);
+
+        for (int i = 0; i < res.nrow; i++) {
+            for (int j = 0; j < res.ncol; j++) {
+                res.entrie[i][j].im = 0;
+                res.entrie[i][j].re = 0;
+                for (int r = 0; r < mat1.ncol; r++) {
+                    res.entrie[i][j] = complexsum(res.entrie[i][j],complexprod(mat1.entrie[i][r],mat2.entrie[r][j]));
+                }
+            }
+        }
+    } catch (const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+    return res;
+}
+
+matrix gaussJordan(matrix&mat){ //Función que trianguliza la matriz por el método de Gauss-Jordan 
+    matrix result = mat; //Copiar la matriz original
+
+    for (int i = 0; i < result.nrow; i++){
+        if (i >= result.ncol) break;  //Si la matriz no es cuadrada, evitamos el desbordamiento
+
+        //Buscamos el máximo de la columna i
+        double maxEl = result.entrie[i][i];
+        int maxRow = i;
+
+        //Busca números mayores en las filas de debajo
+        for (int k = i + 1; k < result.nrow; k++){
+            if (result.entrie[k][i] > maxEl){
+                maxEl = result.entrie[k][i];
+                maxRow = k;
+            }
+        }
+
+        //Intercambia la fila si es necesario
+        if (i != maxRow){
+            for (int k = 0; k < result.ncol; k++){
+                swap(result.entrie[maxRow][k], result.entrie[i][k]);
+            }
+        }
+
+        if (result.entrie[i][i] == 0) {
+            return result;  //Maneja el caso de que tengamos ceros en la diagonal
+        }
+
+        //Elimina elementos debajo del pivote
+        for (int k = i + 1; k < result.nrow; k++) {
+            double factor = result.entrie[k][i] / result.entrie[i][i];
+            for (int j = i; j < result.ncol; j++) {
+                result.entrie[k][j] -= factor * result.entrie[i][j];
+            }
+        }
+    }
+    return result; //Devolvemos la matriz triangulada
+}
+
+complexmatrix cgaussJordan(complexmatrix& mat){ //Lo mismo con matrices complejas
+    complexmatrix result = mat;
+
+    for (int i = 0; i < result.nrow; ++i) {
+        double maxMod = result.entrie[i][i].mod();
+        int maxRow = i;
+
+        for (int k = i + 1; k < result.nrow; ++k) {
+            if (result.entrie[k][i].mod() > maxMod) {
+                maxMod = result.entrie[k][i].mod();
+                maxRow = k;
+            }
+        }
+
+        if (i != maxRow) {
+            for (int k = 0; k < result.ncol; ++k) {
+                swap(result.entrie[maxRow][k], result.entrie[i][k]);
+            }
+        }
+
+        if (result.entrie[i][i].mod() == 0) {
+            return result;
+        }
+
+        for (int k = i + 1; k < result.nrow; ++k) {
+            complex factor = complexdiv(result.entrie[k][i], result.entrie[i][i]);
+
+            for (int j = i; j < result.ncol; ++j) {
+                complex prodFactor = complexprod(factor, result.entrie[i][j]);
+                result.entrie[k][j].re -= prodFactor.re;
+                result.entrie[k][j].im -= prodFactor.im;
+            }
+        }
+    }
+
+    return result;
+}
+
+double det(matrix mat){ //Función que calcula el determinante de una matriz
+    matrix gauss=gaussJordan(mat); //Obtenemos la matriz triangulada de la introducida
+    double res=1;
+    try{
+        iseq(mat.ncol, mat.nrow); //Miramos si la matriz es cuadrada
+        for(int i=0; i<mat.ncol; i++){
+            res*=gauss.entrie[i][i]; //Multiplicamos el resultado por los elementos de la diagonal
+        }
+    } catch (const invalid_argument& e){
+        cout << e.what() << endl; //Error
+    }
+    return res;
+}
+
+complex cdet(complexmatrix mat){ //Lo mismo para matrices complejas
+    complexmatrix gauss=cgaussJordan(mat);
+    complex res;
+    res.im=1;
+    res.re=1;
+    try{
+        iseq(mat.ncol, mat.nrow);
+        for(int i=0; i<mat.ncol; i++){
+            res=complexprod(res, gauss.entrie[i][i]);
+        }
+    } catch (const invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+    return res;
+}
+#endif //fisicaUZ_H_INCLUDED
