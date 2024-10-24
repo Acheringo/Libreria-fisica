@@ -4,13 +4,19 @@
     -complex-
         Números complejos. Toma un valor real y uno imaginario (que a la hora de introducirlo no requiere de la i).
         Métodos asociados: print(). Muestra en la consola el número complejo.
-                           mod()->double. Devuelve el módulo del número complejo
+                           mod()->double. Devuelve el cuadrado del módulo del número complejo
                            arctg()->double. Devuelve el arctg del número complejo correspondiente a su forma polar.
+        Operadores asociados: + (suma)
+                              * (producto complejo)
+                              / (división compleja)
+                              = (asignación)
 
     -matrix-
         Matrices. Toma un número de filas y otro de columnas, además de las entradas. Se construye dinámicamente, siendo necesario indicar el número de filas y el de columnas. Se destruye al finalizar para evitar fugas de datos.
         Métodos asociados: print(). Muestra en la consola las componentes de la matriz, formateadas para tener la forma de dicha matriz.
-
+        Operadores asociados: + (suma de matrices)
+                              * (producto de matrices)
+                              = (asignación)
     -tensor-
         Tensores. Toma un array para sus dimensiones y otro para los datos. También necesita el orden y el tamaño total. A la hora de su construcción requiere de las dimensiones y el orden. Se destruye al finalizar para evitar fugas de datos.
         Métodos asociados: No accesibles por el usuario: calculateIndex(int[])->int. Busca el índice asociado a la entradad del tensor.
@@ -24,17 +30,8 @@
         Igual que matrix pero con entradas complejas
 
 --FUNCIONES--
-    complexsum(complex, complex-> complex)
-        Hace la suma de números complejos
-    
-    complexprod(complex, complex->complex)
-        Hace el producto de números complejos
-
     conjugate(complex->complex)
         Devuelve el conjugado de un número complejo
-
-    complexdiv(complex, complex->complex)
-        Hace la división de números complejos
 
     kronecker(int, int -> int)
         Esta función actúa como la delta de Kronecker. Le das dos índices (i,j) y devuelve 0 o 1 en función de si ambos índices son iguales
@@ -53,9 +50,6 @@
 
     iseq(int, int->)
         No utilizable. Se usa para devolver error en el producto de matrices.
-    
-    prod(matrix, matrix -> matrix)/cprod(complexmatrix, complexmatrix -> complexmatrix)
-        Hace el producto de matrices. Da error si las dimensiones no son compatibles (utilizando iseq)
 
     gaussJordan(matrix -> matrix)/cgaussJordan(complexmatrix -> complexmatrix)
         Devuelve la matriz triangular superior asociada a la matriz de entrada utilizando el método de Gauss-Jordan. No la reduce.

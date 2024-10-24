@@ -67,11 +67,35 @@ class complex{ //Clase de números complejos
                     cout<<im<<"i";
                 }
         }
-        double mod(){ //Método para calcular el módulo de un número complejo
+        double mod(){ //Método para calcular el cuadrado del módulo de un número complejo
             return re*re+im*im;
         }
-        double arctg(){ //Método que devuelve el arcotagente del ángulo polar del número complejo
+        double tg(){ //Método que devuelve el arcotagente del ángulo polar del número complejo
             return im/re;
+        }
+        complex operator*(const complex& other) {
+            complex result;
+            result.re = (re * other.re) - (im * other.im);
+            result.im = (re * other.im) + (im * other.re);
+            return result;
+        }
+        complex operator+(const complex& other) {
+            complex result;
+            result.re = re+other.re;
+            result.im = im+other.im;
+            return result;
+        }
+        complex operator/(const complex& other){
+            complex res;
+            double denom=other.re*other.re+other.im*other.im;
+            res.re=(re*other.re+im*other.im)/denom;
+            res.im=(im*other.re-re*other.im)/denom;
+            return res;
+        }
+        complex& operator=(const complex& other){
+            re=other.re;
+            im=other.im;
+            return *this;
         }
 
 };
@@ -131,6 +155,39 @@ class matrix{ //Clase de matrices reales
                 }
             }
             return *this;
+        }
+
+        matrix operator*(const matrix& other){ //Sobrecarga del operador de producto
+            matrix res(nrow, other.ncol);
+            if(ncol!=other.nrow){
+                cout<<"Matrices dimensions are incompatible";
+            }
+            else{
+                for (int i = 0; i < res.nrow; i++){
+                    for (int j = 0; j < res.ncol; j++){
+                        res.entrie[i][j] = 0;
+                        for (int r = 0; r < ncol; r++){
+                            res.entrie[i][j] += entrie[i][r] * other.entrie[r][j]; //Hacemos la multiplicación elemento por elemento (siguiendo las normas)
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        matrix operator+(const matrix& other){ //Sobrecarga del operador de suma
+            matrix res(nrow, ncol);
+            if(ncol!=other.ncol || nrow!=other.nrow){
+                cout<<"Matrices dimensions are incompatible";
+            }
+            else{
+                for (int i = 0; i < nrow; i++){
+                    for (int j = 0; j < res.ncol; j++){
+                        res.entrie[i][j]=entrie[i][j]+other.entrie[i][j];
+                    }
+                }
+            }
+            return res;
         }
         void print(){ //Método para mostrar los valores en pantalla
             for(int i=0; i<nrow; i++){
@@ -194,6 +251,39 @@ class complexmatrix{ //Clase de matrices reales (iguales que matrix solo que con
                 }
             }
             return *this;
+        }
+        complexmatrix operator*(const complexmatrix& other){
+            complexmatrix res(nrow, other.ncol);
+            if(ncol!=other.nrow){
+                cout<<"Matrices dimensions are incompatible";
+            }
+            else{
+                for (int i = 0; i < res.nrow; i++){
+                    for (int j = 0; j < res.ncol; j++){
+                        res.entrie[i][j].re = 0;
+                        res.entrie[i][j].im=0;
+                        for (int r = 0; r < ncol; r++){
+                            res.entrie[i][j] = res.entrie[i][j] + entrie[i][r]*other.entrie[r][j]; //Hacemos la multiplicación elemento por elemento (siguiendo las normas)
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        complexmatrix operator+(const complexmatrix& other){
+            complexmatrix res(nrow, ncol);
+            if(ncol!=other.ncol || nrow!=other.nrow){
+                cout<<"Matrices dimensions are incompatible";
+            }
+            else{
+                for (int i = 0; i < nrow; i++){
+                    for (int j = 0; j < res.ncol; j++){
+                        res.entrie[i][j]=entrie[i][j]+other.entrie[i][j];
+                    }
+                }
+            }
+            return res;
         }
         void print(){
             for(int i=0; i<nrow; i++){
@@ -301,26 +391,6 @@ public:
     }
 };
 
-complex complexsum(complex a, complex b){ //Suma compleja
-    /*
-    (a+bi)+(c+di)=(a+c)+(b+d)i
-    */
-    complex res;
-    res.re=a.re+b.re;
-    res.im=a.im+b.im; 
-    return res;
-}
-
-complex complexprod(complex a, complex b){ //Producto complejo
-    /*
-    (a+bi)(c+di)=(ac-bd)+(ad+bc)i
-    */
-    complex res;
-    res.re=a.re*b.re-a.im*b.im;
-    res.im=a.re*b.im+a.im*b.re;
-    return res;
-}
-
 complex conjugate(complex a){ //Complejo conjugado
     /*
     conjugado de a+bi=a-bi
@@ -328,17 +398,6 @@ complex conjugate(complex a){ //Complejo conjugado
     complex res;
     res.re=a.re;
     res.im=-a.im;
-    return res;
-}
-
-complex complexdiv(complex a, complex b){ //División compleja
-    /*
-    (a+bi)/(c+di)=(a+bi)(c-di)/(c^2+d^2)=[(ac+bd)+(bc-ad)i]/(c^2+d^2)
-    */
-    complex res;
-    double denom = b.re * b.re + b.im * b.im;
-    res.re = (a.re * b.re + a.im * b.im) / denom;
-    res.im = (a.im * b.re - a.re * b.im) / denom;
     return res;
 }
 
@@ -401,49 +460,10 @@ double prod_esc(double arr1[], double arr2[], int n){ //Producto escalar de dos 
     return res;
 }
 
-
 void iseq(int n, int m){ //Función que devuelve error si dos números son distintos, usado en matrices
     if (n != m) {
         throw invalid_argument("Matrix dimension incompatible");
     }
-}
-
-matrix prod(matrix mat1, matrix mat2){ //Producto de dos matrices
-    matrix res(mat1.nrow, mat2.ncol); //Creamos una matriz para guardar el resultado con el número de filas de mat1 y columnas de mat2
-    try {
-        iseq(mat1.ncol, mat2.nrow); //Miramos si son compatibles
-
-        for (int i = 0; i < res.nrow; i++){
-            for (int j = 0; j < res.ncol; j++){
-                res.entrie[i][j] = 0;
-                for (int r = 0; r < mat1.ncol; r++){
-                    res.entrie[i][j] += mat1.entrie[i][r] * mat2.entrie[r][j]; //Hacemos la multiplicación elemento por elemento (siguiendo las normas)
-                }
-            }
-        }
-    } catch (const invalid_argument& e){
-        cout << e.what() << endl; //Error
-    }
-    return res;
-}
-complexmatrix cprod(complexmatrix mat1, complexmatrix mat2){ //Igual que el anterior pero con complejos 
-    complexmatrix res(mat1.nrow, mat2.ncol);
-    try {
-        iseq(mat1.ncol, mat2.nrow);
-
-        for (int i = 0; i < res.nrow; i++) {
-            for (int j = 0; j < res.ncol; j++) {
-                res.entrie[i][j].im = 0;
-                res.entrie[i][j].re = 0;
-                for (int r = 0; r < mat1.ncol; r++) {
-                    res.entrie[i][j] = complexsum(res.entrie[i][j],complexprod(mat1.entrie[i][r],mat2.entrie[r][j]));
-                }
-            }
-        }
-    } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
-    }
-    return res;
 }
 
 matrix gaussJordan(matrix&mat){ //Función que trianguliza la matriz por el método de Gauss-Jordan 
@@ -511,10 +531,10 @@ complexmatrix cgaussJordan(complexmatrix& mat){ //Lo mismo con matrices compleja
         }
 
         for (int k = i + 1; k < result.nrow; ++k) {
-            complex factor = complexdiv(result.entrie[k][i], result.entrie[i][i]);
+            complex factor = result.entrie[k][i]/result.entrie[i][i];
 
             for (int j = i; j < result.ncol; ++j) {
-                complex prodFactor = complexprod(factor, result.entrie[i][j]);
+                complex prodFactor = factor* result.entrie[i][j];
                 result.entrie[k][j].re -= prodFactor.re;
                 result.entrie[k][j].im -= prodFactor.im;
             }
@@ -546,7 +566,7 @@ complex cdet(complexmatrix mat){ //Lo mismo para matrices complejas
     try{
         iseq(mat.ncol, mat.nrow);
         for(int i=0; i<mat.ncol; i++){
-            res=complexprod(res, gauss.entrie[i][i]);
+            res=res*gauss.entrie[i][i];
         }
     } catch (const invalid_argument& e) {
         cout << e.what() << endl;
