@@ -2,10 +2,10 @@
 
 --CLASES--
     -complex-
-        Números complejos. Toma un valor real y uno imaginario (que a la hora de introducirlo no requiere de la i).
+        Números complejos. Toma un valor real y uno imaginario (que a la hora de introducirlo no requiere de la i). Por defecto crea 1+0i
         Métodos asociados: print(). Muestra en la consola el número complejo.
                            mod()->double. Devuelve el cuadrado del módulo del número complejo
-                           arctg()->double. Devuelve el arctg del número complejo correspondiente a su forma polar.
+                           arctg()->double. Devuelve la tangente del número complejo correspondiente a su forma polar.
         Operadores asociados: + (suma)
                               * (producto complejo)
                               / (división compleja)
@@ -25,9 +25,17 @@
                                                       getValue(int[])->double. Recibe un array con el índice del elemento que queremos obtener y devuelve el valor de dicho elemento. Da error si no hay nada en dicho elemento.
                                                       print()->. Muestra el tensor formateado como stacks de matrices, para una lectura más sencilla.
                                                       printVal(int[])->. Recibe el índice del elemento a mostrar y muestra en la consola el elemento asociado a dicho índice.
-
+        Operadores asociados: = (asignación)
+                              * (producto tensorial)
     -complexmatrix-
         Igual que matrix pero con entradas complejas
+
+    -poly-
+        Polinomios. Toma un entero para su grado.
+        Métodos asociados: print() muestra el polinomio en pantalla como a+bx+...+cx^n
+                           evaluate(double)->double. Recibe un número y devuelve el polinomio evaluado en ese punto
+        Operadores asociados: = (asignación)
+                              + (suma)
 
 --FUNCIONES--
     conjugate(complex->complex)
@@ -42,7 +50,7 @@
     factorial(int -> int)
         Esta función devuelve el factorial de un número
 
-    combinatorio(int, int -> int)
+    comb(int, int -> int)
         Esta función recibe dos números (n,k), y devuelve el número combinatorio nCk. Hace uso de la función "factorial".
 
     prod_esc(double[], double[], int ->double)
@@ -56,3 +64,6 @@
     
     det(matriz -> double)/cdet(complexmatrix -> complex)
         Devuelve el determinante de la matriz. Utiliza (c)gaussJordan para escalonar y multiplica los valores de la diagonal.
+
+    derivative(poly -> poly)
+        Devuelve la derivada del polinomio

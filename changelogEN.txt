@@ -1,0 +1,32 @@
+--Changelog--
+    -2024-
+        -21/10-
+            Ver 1.0.0: First version
+        -23/10-
+            Ver 1.1.0: News: "complexmatrix" class is added. Works as "matrix" but with complex entries. Same methods as matrix.
+                             "gaussJordan" function is added.
+                             "det" function is added.
+                       Fixes: Fixed an error that when you were copying a matrix, it said violation of memory.
+        -24/10-
+            Ver 1.1.1: New: "printzeros()" method is added to "complex" class
+                            "complexdiv" function is added
+                            "cgaussJordan", "cprod" and "cdet" functions added
+        -25/10-
+            Ver 1.1.2: Changes: "complexsum", "complexprod" and "complexdiv" functions are eliminated. In exchange, support for +, * and / operator has been added to "complex class".
+                                "prod" function elimnated. In exchange, support for + and * operators has been added to "matrix" and "complexmatrix" classes
+                                Added operator = to "complex" class
+                       Fixes:   "complex"'s method "arctg()" has been renamed to "tg()"
+                                "mod()"'s method description has been changed.
+        -26/10-
+            Ver 1.2.0: Novedades: Added support to operator = in "tensor" class
+                                  Added support to operator * in "tensor" class
+                                  Added "poly" class
+                                  Added "derivative" function
+                                  Added "evaulate" method to "poly" class
+                                  Added "print" method to "poly" class
+                                  Added support to operator = in "poly" class
+                                  Added support to operator + in "poly" class
+                                  Added constructor to "complex" class (made by PhysicsPulsar)
+                       Arreglos:  When using "print()" method from the "complex" class with 0+0i, nothing was shown. Now, it shows 0
+                                  Eliminated "printzeros()" method from the same class
+                                  Function "combinatorio" has been renamed to "comb"

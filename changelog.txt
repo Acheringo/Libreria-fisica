@@ -17,3 +17,16 @@
                                   Se añade soporte para el operador = para la clase complex
                        Arreglos:  Uno de los métodos de la función complex se llamaba erróneamente "arctg", se ha solucionado y ahora se llama "tg"
                                   El método "mod()" decía erróneamente que devolvía el módulo del número complejo, cuando devuelve el cuadrado del módulo
+        -26/10-
+            Ver 1.2.0: Novedades: Se añade soporte al operador = para la clase "tensor"
+                                  Se añade soporte al operador * para la clase "tensor" (como producto tensorial)
+                                  Se añade la clase "poly" para polinomios de coeficientes reales
+                                  Se añade la función "derivative": toma un polinomio y devuelve su derivada
+                                  Se añade el método "evaulate" a la clase "poly"
+                                  Se añade el método "print" a la clase "poly"
+                                  Se añade el operador = a la clase "poly"
+                                  Se añade el operador + a la clase "poly"
+                                  Se añade un constructor a la clase "complex" (hecho por PhysicsPulsar). Por defecto crea el número 1+0i
+                       Arreglos:  El método "print()" de la clase "complex" no mostraba nada al imprimir el número 0+0i. Ahora muesta 0
+                                  A cambio, se elimina el método "printzeros()" de la misma clase
+                       Cambios:   Se cambia el nombre de la función "combinatorio" a "comb"

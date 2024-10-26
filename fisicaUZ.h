@@ -10,6 +10,9 @@ class complex{ //Clase de números complejos
         double re; //Parte real
         double im; //Parte imaginaria
         void print(){ //Método para mostrar en pantalla el número complejo, formateado como re+im i
+            if(re==0 && im==0){
+                cout<<0;
+            }
             if(re<0){
                 cout<<re;
             }
@@ -44,28 +47,13 @@ class complex{ //Clase de números complejos
                 } //Si la parte imaginaria es menor que 0, la mostramos sola, ya que el signo ya está puesto
             }
         }
-        void printzeros(){ //Misma función que print solo que si re=0 y im=0, muestra 0 + 0i
-            cout<<re;
-                if(im>=0){
-                    if(im==1){
-                        cout<<"+i";
-                    }
-                    else{
-                        cout<<"+"<<im<<"i";
-                    }
-
-                }
-                if(im<0){
-                    if(im==-1){
-                        cout<<"-i";
-                    }
-                    else{
-                    cout<<im<<"i";
-                    }
-                }
-                if(im==0){
-                    cout<<im<<"i";
-                }
+        complex(){ // Constructor por defecto
+            re = 1.0;
+            im = 0.0;
+        }
+        complex(double a, double b){ // Constructor en forma binómica
+            re = a;
+            im = b;
         }
         double mod(){ //Método para calcular el cuadrado del módulo de un número complejo
             return re*re+im*im;
@@ -288,7 +276,7 @@ class complexmatrix{ //Clase de matrices reales (iguales que matrix solo que con
         void print(){
             for(int i=0; i<nrow; i++){
                 for(int j=0; j<ncol;j++){
-                    entrie[i][j].printzeros(); cout<<" ";
+                    entrie[i][j].print(); cout<<" ";
                 }
                 cout<<endl;
             }
@@ -345,50 +333,242 @@ private:
     en forma de hipermatriz para facilitar la lectura. Hace uso de calculateIndex para saber qué elemento
     tiene que mostrar cada vez, y se llama así mismo hasta que llegue a la última capa (que es igual que order)
     */
-public:
-    tensor(int* dims, int ord) : order(ord){ //Constructor dinámico
-        dimensions = new int[order]; //Las dimensiones del tensor van a ser un array con "order" elementos
-        totalSize = 1; //Inicializamos el tamaño total como 1
-        for (int i = 0; i < order; ++i) {
-            dimensions[i] = dims[i]; //A cada elemento de dimensiones, le asignamos el valor del array de dimensiones que entra
-            totalSize *= dimensions[i]; //El tamaño total quedará multiplicado por cada una de las dimensiones
+    public:
+        tensor(int* dims, int ord) : order(ord){ //Constructor dinámico
+            dimensions = new int[order]; //Las dimensiones del tensor van a ser un array con "order" elementos
+            totalSize = 1; //Inicializamos el tamaño total como 1
+            for (int i = 0; i < order; ++i) {
+                dimensions[i] = dims[i]; //A cada elemento de dimensiones, le asignamos el valor del array de dimensiones que entra
+                totalSize *= dimensions[i]; //El tamaño total quedará multiplicado por cada una de las dimensiones
+            }
+            data = new double[totalSize]; //El array con los datos tendrá un número de elementos igual a tamaño total
         }
-        data = new double[totalSize]; //El array con los datos tendrá un número de elementos igual a tamaño total
-    }
 
-    // Destructor
-    ~tensor(){
-        delete[] data; //Borra los datos
-        delete[] dimensions; //Borra las dimensiones
-    }
+        // Destructor
+        ~tensor(){
+            delete[] data; //Borra los datos
+            delete[] dimensions; //Borra las dimensiones
+        }
 
-    void setValue(int* indices, double value){ //Méotodo para asignar valores
-        if (indices != nullptr){ //Si el array de índices no es nulo 
-            int index = calculateIndex(indices); //Calculamos la posición del array de datos
-            data[index] = value; //Asignamos el valor a esa posición
+        tensor(const tensor& other){
+            order = other.order;
+            dimensions = new int[order];
+            totalSize = other.totalSize;
+            for (int i = 0; i < order; ++i){
+                dimensions[i]=other.dimensions[i];
+            }
+            data=new double[totalSize];
+            for(int i=0; i<totalSize; i++){
+                data[i]=other.data[i];
+            }
         }
-    }
 
-    double getValue(int* indices) const{ //Método para obtener un valor
-    try{
-        if (indices == nullptr){ //Si el array de índices es nulo
-            throw invalid_argument("Element does not exist"); //Mostramos mensaje de error
+        tensor& operator=(const tensor& other){
+            if (this != &other) {
+                delete[] data;
+            
+                order = other.order;
+                dimensions=new int[order];
+                totalSize = other.totalSize;
+                data = new double[totalSize];
+                for(int i=0; i<order;i++){
+                    dimensions[i]=other.dimensions[i];
+                }
+                for (int i = 0; i < totalSize; ++i){
+                    data[i]=other.data[i];
+                }
+            }
+            return*this;
         }
-        int index = calculateIndex(indices); //Calculamos la posición en el array de datos
-        return data[index]; //Devolvemos el elemento
-    } catch(const invalid_argument&e){ //Error
-        cout<<e.what()<<endl;
+        void setValue(int* indices, double value){ //Méotodo para asignar valores
+            if (indices != nullptr){ //Si el array de índices no es nulo 
+                int index = calculateIndex(indices); //Calculamos la posición del array de datos
+                data[index] = value; //Asignamos el valor a esa posición
+            }
         }
-    }
-    
-    void print() const{ //Método para imprimir el tensor
-        int* indices = new int[order]; //Creamos un array para los índices del tamaño del orden del tensor
-        printRecursive(indices, 0); //Iniciamos el print recursivo
-        delete[] indices; //Borramos los índices
-    }
-    void printVal(int* indices) const{ //Método para imprimir un elemento
-        cout<<getValue(indices); //Muestra el elemento correspondiente a los índices introducidos
-    }
+
+        double getValue(int* indices) const{ //Método para obtener un valor
+        try{
+            if (indices == nullptr){ //Si el array de índices es nulo
+                throw invalid_argument("Element does not exist"); //Mostramos mensaje de error
+            }
+            int index = calculateIndex(indices); //Calculamos la posición en el array de datos
+            return data[index]; //Devolvemos el elemento
+        } catch(const invalid_argument&e){ //Error
+            cout<<e.what()<<endl;
+            }
+            return 0;
+        }
+        
+        void print() const{ //Método para imprimir el tensor
+            int* indices = new int[order]; //Creamos un array para los índices del tamaño del orden del tensor
+            printRecursive(indices, 0); //Iniciamos el print recursivo
+            delete[] indices; //Borramos los índices
+        }
+        void printVal(int* indices) const{ //Método para imprimir un elemento
+            cout<<getValue(indices); //Muestra el elemento correspondiente a los índices introducidos
+        }
+        tensor operator*(const tensor& other) const {
+            // El orden del nuevo tensor es la suma de los órdenes de ambos tensores
+            int newOrder = this->order + other.order;
+            
+            // Crear un array con las nuevas dimensiones combinadas
+            int* newDimensions = new int[newOrder];
+            for (int i = 0; i < this->order; ++i) {
+                newDimensions[i] = this->dimensions[i];
+            }
+            for (int i = 0; i < other.order; ++i) {
+                newDimensions[this->order + i] = other.dimensions[i];
+            }
+            
+            // Crear el nuevo tensor
+            tensor result(newDimensions, newOrder);
+            delete[] newDimensions;
+            
+            // Rellenar los datos del nuevo tensor aplicando el producto tensorial
+            // Recorremos ambos tensores y asignamos los valores al nuevo tensor
+            int* indicesA = new int[this->order];
+            int* indicesB = new int[other.order];
+            int* indicesResult = new int[newOrder];
+            
+            for (int i = 0; i < this->totalSize; ++i) {
+                // Obtener los índices correspondientes del tensor A
+                int remaining = i;
+                for (int j = this->order - 1; j >= 0; --j) {
+                    indicesA[j] = remaining % this->dimensions[j];
+                    remaining /= this->dimensions[j];
+                }
+                
+                for (int j = 0; j < other.totalSize; ++j) {
+                    // Obtener los índices correspondientes del tensor B
+                    remaining = j;
+                    for (int k = other.order - 1; k >= 0; --k) {
+                        indicesB[k] = remaining % other.dimensions[k];
+                        remaining /= other.dimensions[k];
+                    }
+                    
+                    // Combinar los índices de A y B en los índices del nuevo tensor
+                    for (int a = 0; a < this->order; ++a) {
+                        indicesResult[a] = indicesA[a];
+                    }
+                    for (int b = 0; b < other.order; ++b) {
+                        indicesResult[this->order + b] = indicesB[b];
+                    }
+                    
+                    // Asignar el producto de los valores de A y B al nuevo tensor
+                    double value = this->getValue(indicesA) * other.getValue(indicesB);
+                    result.setValue(indicesResult, value);
+                }
+            }
+            
+            delete[] indicesA;
+            delete[] indicesB;
+            delete[] indicesResult;
+            
+            return result;
+        }
+
+};
+
+class poly {
+    public:
+        int dim;
+        double* entrie;
+        poly(int dimension){
+            dim=dimension;
+            entrie=new double[dim];
+        }
+        ~poly(){
+            delete[] entrie;
+        }
+        poly(const poly& other){
+            dim = other.dim;
+            entrie = new double[dim];
+            for (int i = 0; i < dim; ++i){
+                entrie[i]=other.entrie[i];
+            }
+        }
+
+        poly& operator=(const poly& other){
+            if (this != &other) {
+                delete[] entrie;
+            
+                dim = other.dim;
+                entrie = new double[dim];
+                for(int i=0; i<dim;i++){
+                    entrie[i]=other.entrie[i];
+                }
+            }
+            return*this;
+        }
+        poly operator+(const poly&other){
+            int dmax;
+            int dmin;
+            if(dim>other.dim){
+                dmax=dim;
+                dmin=other.dim;
+                poly res(dmax);
+                for(int i=0; i<dmin;i++){
+                    res.entrie[i]=entrie[i]+other.entrie[i];
+                }
+                for(int i=0; i<dmax-dmin;i++){
+                    res.entrie[i+dmin]=entrie[i+dmin]+0;
+                }
+                return res;
+            }
+            else{
+                dmax=other.dim;
+                dmin=dim;
+                poly res(dmax);
+                for(int i=0; i<dmin;i++){
+                    res.entrie[i]=entrie[i]+other.entrie[i];
+                }
+                for(int i=0; i<dmax-dmin;i++){
+                    res.entrie[i+dmin]=other.entrie[i+dmin]+0;
+                }
+                return res;
+            }
+        }
+
+        void print(){
+            for(int i=0; i<dim; i++){
+                if(i==0){
+                    cout<<entrie[i];
+                }
+                if(i==1){
+                    if(entrie[i]>0){
+                        cout<<"+"<<entrie[i]<<"x";
+                    }
+                    if(entrie[i]<0){
+                        cout<<entrie[i]<<"x";
+                    }
+                }
+                if(i>1){
+                    if(entrie[i]>0){
+                        cout<<"+"<<entrie[i]<<"x^"<<i;
+                    }
+                    if(entrie[i]<0){
+                        cout<<entrie[i]<<"x^"<<i;
+                    }
+                }
+            }
+        }
+        double evaluate(int x){
+            double res=0;
+            for(int i=0; i<dim; i++){
+                double pow=1;
+                for(int j=1; j<i; j++){
+                    pow*=x;
+                }
+                if(x==0){
+                    res=entrie[0];
+                }
+                else{
+                    res+=entrie[i]*pow;
+                }
+            }
+            return res;
+        }
 };
 
 complex conjugate(complex a){ //Complejo conjugado
@@ -446,7 +626,7 @@ int factorial(int n){ //Número factorial (no recursivo)
     return resultado;
 }
 
-int combinatorio(int n, int k){ //Número combinatorio n sobre k
+int comb(int n, int k){ //Número combinatorio n sobre k
     int resultado;
     resultado = (factorial(n)/(factorial(k)*factorial(n-k))); //Definición de número combinatorio
     return resultado;
@@ -570,6 +750,14 @@ complex cdet(complexmatrix mat){ //Lo mismo para matrices complejas
         }
     } catch (const invalid_argument& e) {
         cout << e.what() << endl;
+    }
+    return res;
+}
+
+poly derivative(poly p){
+    poly res(p.dim-1);
+    for(int i=1; i<p.dim; i++){
+        res.entrie[i-1]=p.entrie[i]*i;
     }
     return res;
 }

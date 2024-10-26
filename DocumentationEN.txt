@@ -1,0 +1,69 @@
+---Header "fisicaUZ"---
+
+--CLASES--
+    -complex-
+        Complex number. Takes a double for the real part and another one for the imaginary part (when introduing, you don't need to use the i). If nothing is specified, the number is set as 1+0i
+        Associated methods: print(). Shows the complex number
+                            mod()->double. Returns the complex number module squared
+                            arctg()->double. Returns the tangent of the complex number
+        Associates operators: + (sum)
+                              * (complex producto)
+                              / (complex division)
+                              = (asignation)
+
+    -matrix-
+        Matrices. Takes the number of rows and the number of columns. It is built dinamically, and autodestroys when the program finishes.
+        Associates methods: print(). Shows the matrix components
+        Associated operators: + (matrix sum)
+                              * (matrix product)
+                              = (asignation)
+    -tensor-
+        Tensors. Takes an array for the dimensions, and an integer for the order. It autodestroys when the program finishes.
+        Associated methods: Non accesible by the user: calculateIndex(int[])->int. Searchs the index associated to the entrie of the tensor.
+                                                       printRecursive(int, int)->. Recursive method to show the tensor.
+                            Accesible by the user: setValue(int[], int)->. Takes an array with the index of the element, and the value of the element. Sets that value to that index
+                                                   getValue(int[])->double. Takes an array with the index of the element, and returns the value of the element associated to that index. Error if there's nothing in that index
+                                                   print()->. Shows the tensor
+                                                   printVal(int[])->. Takes the index of the element and shows the element associated to that index
+        Associated operators: = (asignation)
+                              * (tensor product)
+    -complexmatrix-
+        The same as matrix but with complex entries
+
+    -poly-
+        Polynomials. Takes an integer for its grade.
+        Associated methods: print(). Shows the polynomial as a+bx+...+cx^n
+                           evaluate(double)->double. Takes a number and returns the value of the polynomial evaluated with that value
+        Associated operators: = (asignation)
+                              + (sum)
+
+--FUNCTIONS--
+    conjugate(complex->complex)
+        Returns the conjugate of the complex number
+
+    kronecker(int, int -> int)
+        This function acts as Kronecker's delta. Returns 1 if i=j, and 0 if i!=j.
+
+    levi-civita(int, int, int -> int)
+        This function acts as Levi-Civita's tensor. Takes three numbers (i,j,k), and it returns 0 if any of them are repeated, 1 if they are ciclic, and -1 if they are anticyclic.
+
+    factorial(int -> int)
+        Retruns the factorial of a number
+
+    comb(int, int -> int)
+        Takes two numbers (n, k) and returns the number nCk
+
+    prod_esc(double[], double[], int ->double)
+        Receives two arrays (vectors) and their dimension. Returns the scalar product of them.
+
+    iseq(int, int->)
+        Non usable. Returns error if i!=j
+
+    gaussJordan(matrix -> matrix)/cgaussJordan(complexmatrix -> complexmatrix)
+        Uses the GaussJordan algorithm to make zeros below the diagonal of the matrix
+    
+    det(matriz -> double)/cdet(complexmatrix -> complex)
+        Returns the determinant of the matrix
+
+    derivative(poly -> poly)
+        Returns the derivative of the polynomial
