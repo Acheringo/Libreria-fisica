@@ -55,6 +55,14 @@ class complex{ //Clase de números complejos
             re = a;
             im = b;
         }
+        complex(){ \\ Constructor por defecto
+            re = 1.0;
+            im = 0.0;
+        }
+        complex(double a, double b){ \\ Constructor en forma binómica
+            re = a;
+            im = b;
+        }
         double mod(){ //Método para calcular el cuadrado del módulo de un número complejo
             return re*re+im*im;
         }
