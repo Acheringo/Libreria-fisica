@@ -18,15 +18,24 @@
                        Fixes:   "complex"'s method "arctg()" has been renamed to "tg()"
                                 "mod()"'s method description has been changed.
         -26/10-
-            Ver 1.2.0: Novedades: Added support to operator = in "tensor" class
-                                  Added support to operator * in "tensor" class
-                                  Added "poly" class
-                                  Added "derivative" function
-                                  Added "evaulate" method to "poly" class
-                                  Added "print" method to "poly" class
-                                  Added support to operator = in "poly" class
-                                  Added support to operator + in "poly" class
-                                  Added constructor to "complex" class (made by PhysicsPulsar)
-                       Arreglos:  When using "print()" method from the "complex" class with 0+0i, nothing was shown. Now, it shows 0
-                                  Eliminated "printzeros()" method from the same class
-                                  Function "combinatorio" has been renamed to "comb"
+            Ver 1.2.0: New:    Added support to operator = in "tensor" class
+                               Added support to operator * in "tensor" class
+                               Added "poly" class
+                               Added "derivative" function
+                               Added "evaulate" method to "poly" class
+                               Added "print" method to "poly" class
+                               Added support to operator = in "poly" class
+                               Added support to operator + in "poly" class
+                               Added constructor to "complex" class (made by PhysicsPulsar)
+                       Fixes: When using "print()" method from the "complex" class with 0+0i, nothing was shown. Now, it shows 0
+                              Eliminated "printzeros()" method from the same class
+                              Function "combinatorio" has been renamed to "comb"
+        -29/10-
+            Ver 1.2.1: New:    Added support to operator * in class "poly"
+                               Added "exponential" function
+                               Added "natlog" function
+                               Added "power" function
+                               Added "sin" function
+                               Added "cos" function
+                               Added "tan" function
+                       Fixes:  When using "print()" method in "poly" class with 0+0x+0x^2+..., nothing was shown. Now, it shows 0

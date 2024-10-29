@@ -36,6 +36,7 @@
                            evaluate(double)->double. Takes a number and returns the value of the polynomial evaluated with that value
         Associated operators: = (asignation)
                               + (sum)
+                              * (product)
 
 --FUNCTIONS--
     conjugate(complex->complex)
@@ -67,3 +68,21 @@
 
     derivative(poly -> poly)
         Returns the derivative of the polynomial
+    
+    power(double, int->double)
+        Returns the number to the indicated power
+    
+    exp(double -> double)
+        Returns the exponential of the number
+
+    natlog(double -> double)
+        Returns the natural logarithm of the number
+    
+    sin(double -> double)
+        Returns the sine of the number
+    
+    cos(double -> double)
+        Returns the cosine of the number
+
+    tan(double -> double)
+        Returns the tangent of the number

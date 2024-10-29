@@ -30,3 +30,12 @@
                        Arreglos:  El método "print()" de la clase "complex" no mostraba nada al imprimir el número 0+0i. Ahora muesta 0
                                   A cambio, se elimina el método "printzeros()" de la misma clase
                        Cambios:   Se cambia el nombre de la función "combinatorio" a "comb"
+        -29/10-
+            Ver 1.2.1: Novedades: Se añade soporte al operador * para la clase "poly"
+                                  Se añade la función "exponential": toma un número y devuelve la exponencial de ese número.
+                                  Se añade la función "power": toma dos números, base y exponente, y devuelve la potencia base^exponente.
+                                  Se añade la función "natlog": toma un número y devuelve el logaritmo natural de ese número
+                                  Se añade la función "sin": toma un número y devuelve el seno
+                                  Se añade la función "cos": toma un número y devuelve el coseno
+                                  Se añade la función "tan": toma un número y devuelve la tangente
+                       Arreglos:  El método "print()" de la clase "poly" no mostraba nada al imprimir 0+0x+0x^2+... Ahora muestra 0. 

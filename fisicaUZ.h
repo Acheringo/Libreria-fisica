@@ -55,18 +55,10 @@ class complex{ //Clase de números complejos
             re = a;
             im = b;
         }
-        complex(){ \\ Constructor por defecto
-            re = 1.0;
-            im = 0.0;
-        }
-        complex(double a, double b){ \\ Constructor en forma binómica
-            re = a;
-            im = b;
-        }
         double mod(){ //Método para calcular el cuadrado del módulo de un número complejo
             return re*re+im*im;
         }
-        double tg(){ //Método que devuelve el arcotagente del ángulo polar del número complejo
+        double tg(){ //Método que devuelve la tangente del ángulo polar del número complejo
             return im/re;
         }
         complex operator*(const complex& other) {
@@ -537,11 +529,28 @@ class poly {
                 return res;
             }
         }
+        poly operator*(const poly& other){
+            int ndim=dim*other.dim;
+            poly res(ndim);
+            for(int i=0; i<ndim; i++){
+                res.entrie[i]=0;
+                for(int j=0; j<dim; j++){
+                    for(int k=0; k<other.dim; k++){
+                        if(i==j+k){
+                            res.entrie[i]+=entrie[j]*other.entrie[k];
+                        }
+                    }
+                }
+            }
+            return res;
+        }
 
         void print(){
             for(int i=0; i<dim; i++){
                 if(i==0){
-                    cout<<entrie[i];
+                    if(entrie[i]!=0){
+                        cout<<entrie[i];
+                    }
                 }
                 if(i==1){
                     if(entrie[i]>0){
@@ -559,6 +568,15 @@ class poly {
                         cout<<entrie[i]<<"x^"<<i;
                     }
                 }
+            }
+            int tot=0;
+            for(int i=0; i<dim; i++){
+                if(entrie[i]==0){
+                    tot++;
+                }
+            }
+            if(tot==dim){
+                cout<<"0";
             }
         }
         double evaluate(int x){
@@ -768,5 +786,93 @@ poly derivative(poly p){
         res.entrie[i-1]=p.entrie[i]*i;
     }
     return res;
+}
+
+double power(double x, int pow){
+    double res=1;
+    if(pow<0){
+        cout<<"Non defined for exponents below 0, returning 0";
+        return 0;
+    }
+    if(pow==0){
+        return 1;
+    }
+    if(pow>0){
+        for(int i=1; i<=pow; i++){
+            res*=x;
+        }
+        return res;
+    }
+    cout<<"If here, error, returning 0"; return 0;
+}
+
+double exponential(double x){
+    double eps=1.0;
+    double expo=1.0;
+    int k;
+    for(k=1; eps>3e-6; k++){
+        expo+=power(x, k)/(1.0*factorial(k));
+        eps=1.0/factorial(k);
+    }
+    return expo;
+}
+
+double natlog(double x){
+    if (x <= 0.0) {
+        cout << "Error: x must be greater than 0." << endl;
+        return 0;
+    }
+
+    // Reducción de x para acercarlo a 1
+    int n = 0;
+    while (x > 2) {
+        x /= 2;    // Divide x por 2
+        n++;       // Cuenta el número de divisiones aplicadas
+    }
+
+    double eps = 1;
+    double log = 0;
+    double u = x - 1;    // Cambio de variable: u = x - 1
+    double term = u;     // Primer término de la serie
+    log = term;
+
+    // Serie de Taylor para ln(1 + u)
+    for (int k = 2; eps > 3e-16; k++) {
+        term *= -u * (k - 1) / k;
+        log += term;
+        eps = (term < 0) ? -term : term;  // Cálculo del valor absoluto de term sin fabs
+    }
+
+    // Ajuste del resultado multiplicando por el número de divisiones aplicadas
+    return log + n * 0.6931471805599453;  // ln(2) ≈ 0.6931471805599453
+}
+
+double sin(double x) {
+    double term = x;      // Primer término de la serie de Taylor para el seno
+    double sino = term;   // Inicializa el seno con el primer término
+    int k = 1;
+
+    while (abs(term) > 3e-16) {
+        term *= -x * x / ((2 * k) * (2 * k + 1));  // Actualiza el término usando el valor anterior
+        sino += term;                              // Suma el término al resultado
+        k++;
+    }
+    return sino;
+}
+double cos(double x) {
+    double term = 1;      // Primer término de la serie de Taylor para el seno
+    double cosi = term;   // Inicializa el seno con el primer término
+    int k = 1;
+
+    while (abs(term) > 3e-16) {
+        term *= -x * x / ((2 * k) * (2 * k - 1));  // Actualiza el término usando el valor anterior
+        cosi += term;                              // Suma el término al resultado
+        k++;
+    }
+    return cosi;
+}
+
+double tan(double x){
+    return (sin(x)/cos(x));
 }
 #endif //fisicaUZ_H_INCLUDED
