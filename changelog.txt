@@ -39,3 +39,10 @@
                                   Se añade la función "cos": toma un número y devuelve el coseno
                                   Se añade la función "tan": toma un número y devuelve la tangente
                        Arreglos:  El método "print()" de la clase "poly" no mostraba nada al imprimir 0+0x+0x^2+... Ahora muestra 0. 
+    -2025-
+        -01/03-
+            Ver 1.2.2: Novedades: Se añade la función "pi": devuelve el valor de pi aproximado a 10 decimales
+                                  Se añade la función "arctg": devuelve la arcotangente de un ángulo (en radianes)
+                                  Se añade la función "arctg2": devuelve la arcotangente del ángulo y/x
+                                  Se añade la función "complexLog": devuelve el logaritmo de un número complejo
+                                  Se añade la función "nroot": devuelve la raíz n-ésima de un número

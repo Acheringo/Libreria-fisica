@@ -86,3 +86,18 @@
 
     tan(double -> double)
         Returns the tangent of the number
+    
+    pi()
+       Returns the value of pi approximated to 10 decimal places
+
+    arctg(double -> double)
+        Returns the arctangent of a number
+    
+    arctg2(double, double -> double)
+        Returns the arctangent of y/x
+    
+    nroot(double, int -> double)
+        Returns the n-th root of a number
+
+    complexLog(complex -> complex)
+        Returns the principal value of the logarithm of a complex number

@@ -2,6 +2,7 @@
 #define fisicaUZ_H_INCLUDED
 
 #include<iostream>
+#include<string>
 
 using namespace std;
 
@@ -597,7 +598,7 @@ class poly {
         }
 };
 
-complex conjugate(complex a){ //Complejo conjugado
+complex conjugate (complex a){ //Complejo conjugado
     /*
     conjugado de a+bi=a-bi
     */
@@ -790,20 +791,27 @@ poly derivative(poly p){
 
 double power(double x, int pow){
     double res=1;
-    if(pow<0){
-        cout<<"Non defined for exponents below 0, returning 0";
+    if(x==0){
         return 0;
     }
-    if(pow==0){
-        return 1;
-    }
-    if(pow>0){
-        for(int i=1; i<=pow; i++){
-            res*=x;
+    else{
+        if(pow<0){
+            for(int i=1; i<=-pow; i++){
+                res*=x;
+            }
+            return 1/res;
         }
-        return res;
+        if(pow==0){
+            return 1;
+        }
+        if(pow>0){
+            for(int i=1; i<=pow; i++){
+                res*=x;
+            }
+            return res;
+        }
     }
-    cout<<"If here, error, returning 0"; return 0;
+    cout<<"If here, error, returning -1"; return -1;
 }
 
 double exponential(double x){
@@ -820,7 +828,7 @@ double exponential(double x){
 double natlog(double x){
     if (x <= 0.0) {
         cout << "Error: x must be greater than 0." << endl;
-        return 0;
+        return -1;
     }
 
     // Reducción de x para acercarlo a 1
@@ -874,5 +882,83 @@ double cos(double x) {
 
 double tan(double x){
     return (sin(x)/cos(x));
+}
+
+double pi(){
+    return 3.1415926536; //Aproximación de pi a 10 decimales
+}
+
+double arctg(double z){
+    if(abs(z)>1){
+        if(z>0){
+            return pi()/2-arctg(1/z);
+        }
+        else{
+            return -pi()/2-arctg(1/z);
+        }
+    }
+    double sum=0;
+    double term=z;
+    double z2=z*z;
+    int n=1;
+    while(abs(term)>1e-10){
+        sum += term;
+        term *= -z2 * (2 * n - 1) / (2 * n + 1);
+        n++;
+    }
+    return sum;
+}
+
+double arctg2(double x, double y){
+    double z=y/x;
+    double a=arctg(z);
+    if(x>0){
+        return a;
+    }
+    if(x<0 && y>=0){
+        return pi()+a;
+    }
+    if(x<0 && y<0){
+        return a-pi();
+    }
+    if(x==0 && y>0){
+        return pi()/2;
+    }
+    if(x==0 && y<0){
+        return -pi()/2;
+    }
+    cout<<"If you're seeing this, something went wrong, returning -1";
+    return -1;
+}
+
+double nroot(double x, int n) {
+    if (n <= 0) {
+        cout<<"Not valid, returning -1";
+        return -1;
+    }
+    if (x < 0 && n % 2 == 0) {
+        cout<<"Can't calculate this root, returning -1";
+        return -1;
+    }
+
+    double guess = x / n; // Estimación inicial
+    if (x == 0) return 0; // La raíz de 0 es 0
+
+    for (int i = 0; i < 1000; i++) {
+        double next_guess = ((n - 1) * guess + x / power(guess, n - 1)) / n;
+        if (abs(next_guess - guess) < 1e-10) {
+            return next_guess;
+        }
+        guess = next_guess;
+    }
+    
+    return guess; // Devolver la mejor aproximación encontrada
+}
+
+complex complexLog(complex z){
+    complex res;
+    res.re=natlog(nroot(z.mod(),2));
+    res.im=arctg2(z.re,z.im);
+    return res;
 }
 #endif //fisicaUZ_H_INCLUDED

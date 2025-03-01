@@ -86,3 +86,18 @@
 
     tan(double -> double)
         Devuelve la tangente del número
+    
+    pi()
+        Devuelve el valor de pi aproximado a 10 decimales
+
+    arctg(double -> double)
+        Devuelve la arcotangnte de un número
+    
+    arctg2(double, double -> double)
+        Devuelve la arcotangente de y/x
+    
+    nroot(double, int -> double)
+        Devuelve la raíz n-ésima de un número
+
+    complexLog(complex -> complex)
+        Devuelve el valor principal del logaritmo de un número complejo
